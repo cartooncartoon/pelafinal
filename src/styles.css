@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+::-moz-selection { 
+  background-color: #703cdb; 
+  color: #ffffff;
+  }
+  
+  ::selection {
+  background-color: #703cdb;
+  color: #ffffff;
+  }
