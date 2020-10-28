@@ -2,12 +2,16 @@ import React, { useState, useEffect } from "react";
 import Message from "./message";
 import moment from "moment";
 import "./messages.css";
+import io from 'socket.io-client'
 
 
 
 const Messages = ({ messages: {user}, name, messages,}) => {
 
-  const MY_USER_ID = name;
+
+    const MY_USER_ID = user;
+
+
   let timestamp = new Date().getTime()
   
   const renderMessages = () => {
@@ -15,7 +19,6 @@ const Messages = ({ messages: {user}, name, messages,}) => {
     let messageCount = messages.length;
     let tempMessages = [];
 
-    console.log(messageCount);
 
     while (i < messageCount) {
       let previous = messages[i - 1];
