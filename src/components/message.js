@@ -5,7 +5,7 @@ import './message.css';
 
 const Message = ({ data, startsSequence, isMine, endsSequence, showTimestamp, timestamp }) => {
 
-
+  
  
   const friendlyTimestamp = moment(timestamp).format("LLLL");
   console.log(startsSequence);
@@ -24,7 +24,7 @@ const Message = ({ data, startsSequence, isMine, endsSequence, showTimestamp, ti
 
     <div className="bubble-container">
       <div className="bubble">
-        {data.text}
+        {data.message.message}
       </div>
     </div>
   </div>

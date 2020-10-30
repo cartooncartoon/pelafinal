@@ -6,13 +6,15 @@ import io from 'socket.io-client'
 
 
 
-const Messages = ({ messages: {user}, name, messages,}) => {
+const Messages = ({  messages }) => {
+     
+
+    const MY_USER_ID = messages.id;
 
 
-    const MY_USER_ID = user;
+  let timestamp = messages.timestamp;
 
-
-  let timestamp = new Date().getTime()
+  console.log(timestamp)
   
   const renderMessages = () => {
     let i = 0;

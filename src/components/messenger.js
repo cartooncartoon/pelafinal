@@ -1,49 +1,50 @@
 import React, { useState, useEffect } from "react";
-import Footer from "./footer";
 import Header from "./header";
 import Body from "./body";
-import queryString from 'query-string';
 import Messagebar from './messagebar';
-import io from 'socket.io-client'
-
-let socket;
-const ENDPOINT = 'http://localhost:5000';
+import firebase from 'firebase/app';
+import { firestore, db } from '../firebase/firebase';
 
 
-const Messenger = ({ location }) => {
-  const [name, setName] = useState('');
-  const [room, setRoom] = useState('');
-  const [users, setUsers] = useState('');
+
+
+const Messenger = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-
-  socket = io(ENDPOINT);
-
   
   useEffect(() => {
-    socket.on('message', message => {
-      setMessages(messages => [ ...messages, message ]);
-    });
-    
-    socket.on("roomData", ({ users }) => {
-      setUsers(users);
-    });
-}, []);
-
+    db.collection("messages")
+      .orderBy("timestamp", "asc")
+      .onSnapshot((snapshot) => {
+        setMessages(
+          snapshot.docs.map((doc) => ({ id: doc.id, message: doc.data() }))
+        );
+      });
+  }, []);
+  
   const sendMessage = (event) => {
     event.preventDefault();
 
-    if(message) {
-      socket.emit('sendMessage', message, () => setMessage(''));
-    }
-  }
+    db.collection("messages").add({
+      message: message,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    });
+
+    setMessages([...messages, { message: message }]);
+    setMessage("");
+  };
+
+console.log(setMessage);
+
   return (
     <div className="messenger">
       {/*Header */}
-      <Header />
-      <Body messages={messages} name={name} />
-      <Messagebar message={message} setMessage={setMessage} sendMessage={sendMessage}/>
-      {}
+      <Header /> 
+      <Body
+        messages = {messages} />
+      <Messagebar 
+      setMessage={setMessage} 
+      sendMessage={sendMessage} />
     </div>
   );
 };
